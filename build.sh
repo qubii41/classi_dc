@@ -1,3 +1,2 @@
-#!/usr/bin/env bash
-pip install --upgrade pip
+#!/bin/bash
 pip install -r requirements.txt
