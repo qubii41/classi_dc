@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Klasifikasi Dokumen PMB</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Klasifikasi Dokumen PMB</h1>
+
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required><br>
+        <button class="btn" type="submit">Cek</button>
+    </form>
+
+    {% if filename %}
+        <h2>Gambar yang Diunggah:</h2>
+        <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Gambar diunggah">
+    {% endif %}
+
+    {% if prediction %}
+        <p><strong>Prediksi:</strong> {{ prediction }}</p>
+        <p><strong>Confidence:</strong> {{ (confidence * 100) | round(2) }}%</p>
+    {% endif %}
+
+    <!-- Status Dokumen -->
+    <h2>Status Dokumen:</h2>
+    <table>
+        <tr>
+            <th>Jenis Dokumen</th>
+            <th>Status</th>
+        </tr>
+        {% for jenis, is_qualified in status.items() %}
+        <tr>
+            <td>{{ jenis }}</td>
+            <td class="{{ 'qualified' if is_qualified else 'not-qualified' }}">
+                {{ 'Qualified' if is_qualified else 'Belum Diupload' }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <form action="/reset" method="get">
+        <button class="btn" type="submit">Reset Status</button>
+    </form>
+</body>
+</html>
